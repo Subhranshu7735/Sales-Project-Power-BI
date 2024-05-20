@@ -1,0 +1,144 @@
+ALL POWER BI DAX MEASURE
+
+1. ClassifyCustomer =
+CALCULATE (
+    [Totalsales],
+    FILTER (
+        VALUES ( OrderTbl[CustomerCompany] ),
+        COUNTROWS (
+            FILTER (
+                CustomerClassificationTbl,
+                RANKX ( ALL ( OrderTbl[CustomerCompany] ), [Totalsales],, DESC, DENSE ) >= CustomerClassificationTbl[Min]
+                    && RANKX ( ALL ( OrderTbl[CustomerCompany] ), [Totalsales],, DESC, DENSE ) <= CustomerClassificationTbl[Max]
+            )
+        ) > 0
+    )
+)
+
+
+2. Cumsales =
+CALCULATE (
+    [Totalsales],
+    ALLSELECTED ( DatesTbl[Date] ),
+    DatesTbl[Date] <= MAX ( OrderTbl[OrderDate] )
+)
+
+
+3. CumSalesLY = 
+CALCULATE (
+    [TotalsalesLY],
+    FILTER (
+        ALLSELECTED ( DatesTbl[Date] ),
+        DatesTbl[Date] <= MAX ( DatesTbl[Date] )
+    )
+)
+
+
+4. ParallelPeriodsales =
+CALCULATE ( [Totalsales], PARALLELPERIOD ( DatesTbl[Date], -1, MONTH ) )
+
+
+5. Profitmargin = 
+DIVIDE ( [Totalprofit], [Totalsales] )
+
+
+6. Ranking = 
+IF (
+    ISINSCOPE ( OrderTbl[Category] ),
+    RANKX ( ALL ( OrderTbl[Category] ), [Totalsales],, DESC, DENSE ),
+    BLANK ()
+)
+
+
+7. Rolling30DaySales = 
+CALCULATE (
+    [Totalsales],
+    FILTER (
+        ALLSELECTED ( DatesTbl[Date] ),
+        DatesTbl[Date]
+            > MAX ( DatesTbl[Date] ) - 30
+            && DatesTbl[Date] <= MAX ( DatesTbl[Date] )
+    )
+)
+
+
+8. Top10Clients =
+CALCULATE (
+    [Totalprofit],
+    FILTER (
+        VALUES ( OrderTbl[CustomerCompany] ),
+        RANKX ( ALL ( OrderTbl[CustomerCompany] ), [Totalprofit],, DESC, DENSE ) <= 10
+    )
+)
+
+
+9. TopXsale2 =
+IF (
+    ISINSCOPE ( OrderTbl[Category] ),
+    IF (
+        [Ranking2] <= RankingParameter[RankingParameter Value],
+        [Totalsales],
+        BLANK ()
+    ),
+    SUMX (
+        CALCULATETABLE (
+            VALUES ( OrderTbl[Category] ),
+            FILTER (
+                ALL ( OrderTbl[Category] ),
+                [Ranking2] <= RankingParameter[RankingParameter Value]
+            )
+        ),
+        [Totalsales]
+    )
+)
+
+
+10. TopXSales = 
+IF (
+    [Ranking] <= RankingParameter[RankingParameter Value],
+    [Totalsales],
+    BLANK ()
+)
+
+
+11. Totalcost = 
+SUMX ( OrderTbl, OrderTbl[Amount] * OrderTbl[PurchasingPrice] )
+
+
+12. Totalprofit = 
+[Totalsales] - [Totalcost]
+
+
+13. Totalsales = 
+SUMX ( OrderTbl, OrderTbl[SellingPrice] * OrderTbl[Amount] )
+
+
+14. TotalsalesLY = 
+CALCULATE ( [Totalsales], DATEADD ( DatesTbl[Date], -1, YEAR ) )
+
+
+15. TotalsalesOnweekdays =
+VAR weekdays =
+    FILTER ( DatesTbl, AND ( DatesTbl[DayOfWeek] <> 5, DatesTbl[DayOfWeek] <> 6 ) )
+RETURN
+    SUMX ( weekdays, [Totalsales] )
+
+
+16.TotalsalesOnweekends =
+VAR Weekends =
+    FILTER ( DatesTbl, OR ( DatesTbl[DayOfWeek] = 5, DatesTbl[DayOfWeek] = 6 ) )
+RETURN
+    SUMX ( Weekends, [Totalsales] )
+
+
+17. TotalScenarioSales = 
+SUMX (
+    OrderTbl,
+    OrderTbl[Amount] * ( 1 + DemandChange[DemandChange Value] ) * ( 1 + PriceChange[PriceChange Value] ) * OrderTbl[SellingPrice]
+)
+
+
+18. UniqueCustomers = DISTINCTCOUNT(OrderTbl[CustomerCompany])
+
+
+
