@@ -9,6 +9,7 @@ In this project, I utilized Power BI to transform raw data into visually compell
 
 
 **Key Features**
+
 Interactive Dashboards: Developed multiple dashboards that provide an intuitive and interactive user experience.
 Time Intelligence Functions: Implemented numerous time intelligence functions to analyze trends over time, compare period-over-period data, and forecast future performance.
 Data-Driven Insights: Provided actionable insights that help clients understand their business performance, identify opportunities for growth, and make data-driven decisions.
