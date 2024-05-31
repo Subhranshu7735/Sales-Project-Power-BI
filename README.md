@@ -7,10 +7,12 @@ Welcome to my Power BI Data Analysis project repository! This project showcases 
 **Project Overview**
 In this project, I utilized Power BI to transform raw data into visually compelling and interactive dashboards. By leveraging various time intelligence functions, I provided insights that are crucial for strategic decision-making.
 
+
 **Key Features**
 Interactive Dashboards: Developed multiple dashboards that provide an intuitive and interactive user experience.
 Time Intelligence Functions: Implemented numerous time intelligence functions to analyze trends over time, compare period-over-period data, and forecast future performance.
 Data-Driven Insights: Provided actionable insights that help clients understand their business performance, identify opportunities for growth, and make data-driven decisions.
+
 
 **Dashboard Highlights**
 Sales Performance Dashboard: Visualized key sales metrics, trends, and comparisons over different time periods.
@@ -18,6 +20,7 @@ Customer Insights Dashboard: Analyzed customer behavior, segment performance, an
 Financial Overview Dashboard: Provided a comprehensive view of the company’s financial health, including revenue, expenses, and profitability.
 Product Analysis Dashboard: Highlighted product performance, inventory levels, and profitability by product category.
 Operational Efficiency Dashboard: Monitored operational metrics such as order fulfillment times, supply chain efficiency, and service levels.
+
 
 **Time Intelligence Functions Utilized**
 Year-to-Date (YTD): Calculated metrics from the start of the year to the current date.
